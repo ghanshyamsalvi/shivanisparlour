@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shivani's Parlour – Ahmedabad's Premium Beauty Destination</title>
+<meta name="description" content="Shivani's Parlour – Ahmedabad's most luxurious beauty salon. Bridal makeup, hair styling, facials, nail art & premium skincare. Book your appointment today.">
+<meta name="keywords" content="beauty parlour Ahmedabad, bridal makeup Ahmedabad, luxury salon Gujarat, Shivani parlour">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --rose: #e8a0a8;
+  --rose-deep: #c96a7a;
+  --rose-gold: #b07860;
+  --gold: #d4af7a;
+  --nude: #f0e8e0;
+  --blush: #fdf0f3;
+  --black: #0d0a0b;
+  --charcoal: #1a1215;
+  --white: #fdfbfc;
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(232,160,168,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{
+  background:#0d0a0b;
+  color:var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-weight:300;
+  cursor:none;
+  overflow-x:hidden;
+}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--rose);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;mix-blend-mode:difference;}
+#cursor-trail{position:fixed;width:36px;height:36px;border:1px solid rgba(232,160,168,0.5);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease,transform .2s;}
+body:hover #cursor{transform:translate(-50%,-50%) scale(1);}
+a:hover~#cursor,button:hover~#cursor{transform:translate(-50%,-50%) scale(2);}
+
+/* LOADER */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s ease;
+}
+#loader .l-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,4rem);letter-spacing:.3em;color:var(--rose);opacity:0;animation:fadeUp .8s .3s forwards;}
+#loader .l-sub{font-size:.65rem;letter-spacing:.4em;color:var(--gold);margin-top:.5rem;opacity:0;animation:fadeUp .8s .6s forwards;text-transform:uppercase;}
+#loader .l-bar{width:200px;height:1px;background:rgba(255,255,255,.1);margin-top:3rem;overflow:hidden;opacity:0;animation:fadeUp .5s .9s forwards;}
+#loader .l-fill{height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));animation:loadFill 1.8s 1s ease forwards;}
+@keyframes loadFill{to{width:100%;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* CANVAS BG */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.5rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(13,10,11,0);
+  transition:background .4s,padding .3s;
+  backdrop-filter:blur(0px);
+}
+nav.scrolled{background:rgba(13,10,11,.85);backdrop-filter:blur(20px);padding:1rem 5%;border-bottom:1px solid var(--glass-border);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;letter-spacing:.15em;color:var(--rose);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--rose);}
+.nav-cta{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.6rem 1.6rem;border:1px solid var(--rose);
+  color:var(--rose);text-decoration:none;
+  transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--rose);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.nav-cta:hover{color:var(--black);}
+.nav-cta:hover::before{transform:scaleX(1);}
+.nav-cta span{position:relative;z-index:1;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:24px;height:1px;background:var(--rose);transition:all .3s;}
+
+/* HERO */
+#hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:0 5%;
+  overflow:hidden;
+  background-image:url('https://media.istockphoto.com/id/1856117770/photo/modern-beauty-salon.jpg?s=170667a&w=is&k=20&c=O5nkKn4KAI7DCjBlDri7zYu5QAyFle3j3psuwoMNKKM=');
+  background-size:cover;
+  background-position:center top;
+  background-attachment:fixed;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:linear-gradient(
+    105deg,
+    rgba(13,10,11,0.88) 0%,
+    rgba(13,10,11,0.70) 40%,
+    rgba(30,10,15,0.55) 70%,
+    rgba(13,10,11,0.80) 100%
+  );
+}
+#hero > *{position:relative;z-index:1;}
+.hero-content{position:relative;z-index:2;max-width:700px;padding-top:6rem;}
+.hero-eyebrow{
+  font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1rem;
+  opacity:0;transform:translateY(20px);
+}
+.hero-eyebrow::before{content:'';display:block;width:40px;height:1px;background:var(--gold);}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,7vw,6.5rem);
+  line-height:1.05;font-weight:300;
+  color:var(--white);margin-bottom:1.5rem;
+  opacity:0;transform:translateY(30px);
+}
+.hero-title em{color:var(--rose);font-style:italic;}
+.hero-sub{
+  font-size:.75rem;letter-spacing:.15em;
+  color:rgba(255,255,255,.5);line-height:1.8;
+  margin-bottom:3rem;
+  opacity:0;transform:translateY(20px);
+  max-width:420px;
+}
+.hero-btns{display:flex;gap:1.5rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);}
+.btn-primary{
+  font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  padding:1rem 2.5rem;
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  color:var(--white);text-decoration:none;
+  position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+  box-shadow:0 0 30px rgba(201,106,122,.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(201,106,122,.5);}
+.btn-secondary{
+  font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  padding:1rem 2.5rem;
+  border:1px solid rgba(232,160,168,.4);
+  color:var(--rose);text-decoration:none;
+  transition:all .3s;
+}
+.btn-secondary:hover{border-color:var(--rose);background:rgba(232,160,168,.05);}
+.hero-scroll{
+  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:rgba(255,255,255,.3);font-size:.55rem;letter-spacing:.3em;
+}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,rgba(232,160,168,.5),transparent);animation:scrollAnim 2s ease infinite;}
+@keyframes scrollAnim{0%,100%{transform:scaleY(1);opacity:1;}50%{transform:scaleY(.5);opacity:.5;}}
+
+/* SPARKLES */
+.sparkle{
+  position:absolute;pointer-events:none;
+  width:4px;height:4px;border-radius:50%;
+  background:var(--gold);
+  animation:sparkle var(--dur,3s) var(--delay,0s) ease infinite;
+}
+@keyframes sparkle{
+  0%,100%{opacity:0;transform:scale(0) translateY(0);}
+  20%{opacity:1;transform:scale(1) translateY(-10px);}
+  80%{opacity:.5;transform:scale(.5) translateY(-30px);}
+}
+
+/* SECTION BASE */
+section{position:relative;z-index:1;}
+.section-eyebrow{
+  font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.section-eyebrow::before{content:'';display:block;width:30px;height:1px;background:var(--gold);}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:300;line-height:1.1;
+  margin-bottom:1.5rem;
+}
+.section-title em{color:var(--rose);font-style:italic;}
+
+/* ABOUT */
+#about{
+  padding:8rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&q=80');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+#about::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(13,10,11,0.93);}
+#about>*{position:relative;z-index:1;}
+.about-img-wrap{
+  position:relative;
+  border:1px solid var(--glass-border);
+  overflow:hidden;
+  aspect-ratio:3/4;
+}
+.about-img-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,160,168,.15),rgba(176,120,96,.1));
+  z-index:1;
+}
+.about-img-wrap img{width:100%;height:100%;object-fit:cover;filter:saturate(.8) contrast(1.05);}
+.about-badge{
+  position:absolute;bottom:-1px;right:-1px;
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  padding:1.5rem 2rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;line-height:1.3;
+  z-index:2;
+}
+.about-badge strong{display:block;font-size:2rem;font-weight:400;}
+.about-text p{color:rgba(255,255,255,.55);line-height:1.9;font-size:.8rem;margin-bottom:1.5rem;}
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--glass-border);}
+.counter-item{}
+.counter-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--rose);font-weight:300;}
+.counter-label{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.3rem;}
+
+/* SERVICES */
+#services{
+  padding:8rem 5%;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1920&q=80');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+#services::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(10,6,8,0.94);}
+#services>*{position:relative;z-index:1;}
+.services-header{text-align:center;max-width:600px;margin:0 auto 5rem;}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1.5rem;
+}
+.service-card{
+  position:relative;
+  padding:2.5rem 2rem;
+  border:1px solid var(--glass-border);
+  background:rgba(255,255,255,.02);
+  overflow:hidden;
+  transition:transform .4s,border-color .4s,box-shadow .4s;
+  cursor:pointer;
+  transform-style:preserve-3d;
+}
+.service-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,160,168,.08),rgba(176,120,96,.04));
+  opacity:0;transition:opacity .4s;
+}
+.service-card::after{
+  content:'';position:absolute;
+  top:0;left:-100%;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--rose),transparent);
+  transition:left .6s;
+}
+.service-card:hover{
+  transform:translateY(-6px) perspective(800px) rotateX(2deg);
+  border-color:rgba(232,160,168,.4);
+  box-shadow:0 20px 60px rgba(201,106,122,.15),0 0 0 1px rgba(232,160,168,.1);
+}
+.service-card:hover::before{opacity:1;}
+.service-card:hover::after{left:100%;}
+.service-icon{
+  width:56px;height:56px;margin-bottom:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--glass-border);
+  font-size:1.5rem;
+  background:linear-gradient(135deg,rgba(232,160,168,.1),rgba(176,120,96,.05));
+  transition:transform .4s;
+}
+.service-card:hover .service-icon{transform:scale(1.1) rotate(5deg);}
+.service-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:400;
+  margin-bottom:.8rem;color:var(--white);
+}
+.service-desc{font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.7;}
+.service-price{
+  margin-top:1.5rem;padding-top:1rem;
+  border-top:1px solid var(--glass-border);
+  font-size:.65rem;letter-spacing:.15em;
+  color:var(--rose);text-transform:uppercase;
+}
+
+/* GALLERY */
+#gallery{
+  padding:8rem 5%;
+  position:relative;
+  background:#0d0a0b;
+}
+#gallery::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at center, rgba(201,106,122,0.06) 0%, transparent 70%);
+}
+#gallery>*{position:relative;z-index:1;}
+.gallery-header{text-align:center;max-width:600px;margin:0 auto 4rem;}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:repeat(2,250px);
+  gap:1rem;
+}
+.gallery-item{
+  overflow:hidden;position:relative;
+  border:1px solid var(--glass-border);
+  cursor:pointer;
+}
+.gallery-item:first-child{grid-row:span 2;}
+.gallery-item::after{
+  content:'View';
+  position:absolute;inset:0;
+  background:rgba(13,10,11,.6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--rose);
+  opacity:0;transition:opacity .4s;
+  backdrop-filter:blur(4px);
+}
+.gallery-item:hover::after{opacity:1;}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s;filter:saturate(.7);
+}
+.gallery-item:hover img{transform:scale(1.08);filter:saturate(1);}
+.gallery-cta{text-align:center;margin-top:3rem;}
+
+/* TESTIMONIALS */
+#testimonials{
+  padding:8rem 5%;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=1600&q=80');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+#testimonials::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(10,6,8,0.93);}
+#testimonials>*{position:relative;z-index:1;}
+.testimonials-header{text-align:center;max-width:600px;margin:0 auto 4rem;}
+.testimonials-track{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+}
+.testimonial-card{
+  padding:2.5rem;
+  background:rgba(255,255,255,.02);
+  border:1px solid var(--glass-border);
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.testimonial-card:hover{border-color:rgba(232,160,168,.3);transform:translateY(-4px);}
+.testimonial-card::before{
+  content:'"';
+  position:absolute;top:1rem;right:1.5rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:6rem;color:rgba(232,160,168,.1);
+  line-height:1;pointer-events:none;
+}
+.stars{display:flex;gap:3px;margin-bottom:1.2rem;}
+.star{color:var(--gold);font-size:.9rem;}
+.t-text{font-size:.75rem;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:1.5rem;}
+.t-author{display:flex;align-items:center;gap:.8rem;}
+.t-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;
+  color:var(--white);
+}
+.t-name{font-size:.75rem;font-weight:500;color:var(--white);}
+.t-loc{font-size:.6rem;color:rgba(255,255,255,.35);letter-spacing:.1em;}
+
+/* PRICING */
+#pricing{
+  padding:8rem 5%;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=1920&q=80');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+#pricing::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(10,6,8,0.93);}
+#pricing>*{position:relative;z-index:1;}
+.pricing-header{text-align:center;max-width:600px;margin:0 auto 4rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+.pricing-card{
+  padding:3rem 2rem;
+  border:1px solid var(--glass-border);
+  background:rgba(255,255,255,.02);
+  position:relative;
+  transition:transform .4s,border-color .4s;
+  overflow:hidden;
+}
+.pricing-card.featured{
+  border-color:var(--rose);
+  background:linear-gradient(160deg,rgba(232,160,168,.08),rgba(176,120,96,.05));
+  transform:scale(1.03);
+}
+.pricing-card:hover{transform:translateY(-6px);border-color:rgba(232,160,168,.5);}
+.pricing-card.featured:hover{transform:scale(1.03) translateY(-6px);}
+.pricing-badge{
+  position:absolute;top:1.5rem;right:-2.5rem;
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.35rem 3rem;transform:rotate(35deg);color:var(--white);
+}
+.pricing-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:300;margin-bottom:.5rem;
+}
+.pricing-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:300;
+  color:var(--rose);margin:1rem 0;
+  line-height:1;
+}
+.pricing-price sup{font-size:1.2rem;vertical-align:top;margin-top:.5rem;}
+.pricing-period{font-size:.65rem;color:rgba(255,255,255,.4);margin-left:.3rem;}
+.pricing-desc{font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:2rem;}
+.pricing-features{list-style:none;margin-bottom:2.5rem;}
+.pricing-features li{
+  font-size:.72rem;color:rgba(255,255,255,.55);
+  padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05);
+  display:flex;align-items:center;gap:.6rem;
+}
+.pricing-features li::before{content:'✦';color:var(--rose);font-size:.5rem;flex-shrink:0;}
+.pricing-btn{
+  display:block;text-align:center;text-decoration:none;
+  font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  padding:.9rem;border:1px solid rgba(232,160,168,.4);
+  color:var(--rose);transition:all .3s;
+}
+.pricing-card.featured .pricing-btn{
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  border-color:transparent;color:var(--white);
+}
+.pricing-btn:hover{background:var(--rose);color:var(--black);}
+
+/* BOOKING */
+#booking{
+  padding:8rem 5%;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1597655601841-214a4cfe8b2c?w=1920&q=80');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+#booking::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(10,6,8,0.88);}
+#booking>*{position:relative;z-index:1;}
+.booking-inner{
+  max-width:700px;margin:0 auto;
+  padding:4rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+  position:relative;
+  overflow:hidden;
+}
+.booking-inner::before{
+  content:'';position:absolute;
+  top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 60% 40%,rgba(232,160,168,.05),transparent 60%);
+  pointer-events:none;
+}
+.booking-header{text-align:center;margin-bottom:3rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.form-group{display:flex;flex-direction:column;gap:.6rem;}
+.form-group.full{grid-column:span 2;}
+.form-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.form-input{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(232,160,168,.15);
+  color:var(--white);
+  padding:.85rem 1.2rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:.75rem;font-weight:300;
+  outline:none;
+  transition:border-color .3s,box-shadow .3s;
+  -webkit-appearance:none;
+}
+.form-input option{background:var(--charcoal);}
+.form-input:focus{border-color:var(--rose);box-shadow:0 0 20px rgba(232,160,168,.1);}
+.form-input::placeholder{color:rgba(255,255,255,.2);}
+textarea.form-input{resize:vertical;min-height:100px;}
+.form-submit{
+  width:100%;margin-top:1rem;
+  padding:1.1rem;
+  background:linear-gradient(135deg,var(--rose-deep),var(--rose-gold));
+  border:none;color:var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:box-shadow .3s,transform .3s;
+}
+.form-submit:hover{box-shadow:0 10px 40px rgba(201,106,122,.4);transform:translateY(-2px);}
+.form-submit::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);
+}
+
+/* CONTACT */
+#contact{
+  padding:8rem 5%;
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1600&q=80');
+  background-size:cover;background-position:center bottom;background-attachment:fixed;
+}
+#contact::before{content:'';position:absolute;inset:0;z-index:0;background:rgba(10,6,8,0.92);}
+#contact>*{position:relative;z-index:1;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.contact-info{}
+.contact-info p{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.9;margin-bottom:2.5rem;}
+.contact-items{display:flex;flex-direction:column;gap:1.5rem;}
+.contact-item{display:flex;align-items:flex-start;gap:1rem;}
+.contact-item-icon{
+  width:40px;height:40px;flex-shrink:0;
+  border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+  background:rgba(232,160,168,.05);
+}
+.contact-item-text .label{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.contact-item-text .value{font-size:.78rem;color:rgba(255,255,255,.6);}
+.contact-item-text a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .3s;}
+.contact-item-text a:hover{color:var(--rose);}
+.social-row{display:flex;gap:1rem;margin-top:2rem;}
+.social-btn{
+  padding:.7rem 1.4rem;
+  border:1px solid var(--glass-border);
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);
+  text-decoration:none;
+  display:flex;align-items:center;gap:.5rem;
+  transition:all .3s;
+}
+.social-btn:hover{border-color:var(--rose);color:var(--rose);background:rgba(232,160,168,.05);}
+.map-wrap{
+  height:400px;
+  border:1px solid var(--glass-border);
+  overflow:hidden;
+  position:relative;
+}
+.map-wrap iframe{width:100%;height:100%;border:none;filter:invert(.9) hue-rotate(180deg) saturate(.7);}
+
+/* FOOTER */
+footer{
+  padding:4rem 5% 2rem;
+  border-top:1px solid var(--glass-border);
+  position:relative;
+  background-image:url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&q=70');
+  background-size:cover;background-position:center;
+}
+footer::before{content:'';position:absolute;inset:0;background:rgba(10,6,8,0.96);}
+footer>*{position:relative;z-index:1;}
+.footer-inner{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:2rem;margin-bottom:2rem;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:.15em;color:var(--rose);}
+.footer-logo span{color:var(--gold);}
+.footer-tagline{font-family:'Dancing Script',cursive;font-size:1.2rem;color:rgba(255,255,255,.3);}
+.footer-bottom{text-align:center;font-size:.6rem;color:rgba(255,255,255,.25);letter-spacing:.1em;}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* DIVIDER */
+.luxury-divider{
+  display:flex;align-items:center;gap:1rem;
+  margin:0 auto 4rem;width:fit-content;
+}
+.luxury-divider::before,.luxury-divider::after{content:'';display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--rose));}
+.luxury-divider::after{background:linear-gradient(90deg,var(--rose),transparent);}
+.luxury-divider span{font-size:.7rem;color:var(--rose);letter-spacing:.3em;}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav .nav-links,.nav-cta{display:none;}
+  .hamburger{display:flex;}
+  #about{grid-template-columns:1fr;gap:3rem;}
+  .testimonials-track{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .pricing-card.featured{transform:scale(1);}
+  .contact-grid{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .gallery-item:first-child{grid-row:span 1;}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:span 1;}
+  .booking-inner{padding:2.5rem 1.5rem;}
+  /* Fix iOS parallax */
+  #hero,#about,#services,#testimonials,#pricing,#booking,#contact{background-attachment:scroll;}
+}
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:1fr;}
+  .counters{grid-template-columns:repeat(3,1fr);gap:.8rem;}
+}
+
+/* MOBILE NAV MENU */
+#mobile-menu{
+  display:none;position:fixed;inset:0;z-index:998;
+  background:rgba(13,10,11,.97);backdrop-filter:blur(20px);
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:300;letter-spacing:.1em;
+  color:rgba(255,255,255,.7);text-decoration:none;transition:color .3s;
+}
+#mobile-menu a:hover{color:var(--rose);}
+#close-menu{
+  position:absolute;top:2rem;right:5%;
+  font-size:1.5rem;color:rgba(255,255,255,.5);cursor:pointer;
+  background:none;border:none;font-family:'Montserrat',sans-serif;
+}
+
+/* Floating 3D Girl */
+.float-wrap{position:absolute;right:2%;top:50%;transform:translateY(-50%);width:min(460px,48vw);height:min(600px,62vw);pointer-events:none;}
+@media(max-width:900px){.float-wrap{display:none;}}
+@keyframes girlSpark{0%,100%{opacity:0;transform:scale(0);}40%{opacity:1;transform:scale(1);}80%{opacity:.5;transform:scale(.7);}}
+@keyframes floatHeart{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+@keyframes lipstickMove{
+  0%,100%{transform:translateX(0) translateY(0) rotate(-10deg);}
+  30%{transform:translateX(-3px) translateY(-4px) rotate(-15deg);}
+  60%{transform:translateX(3px) translateY(-2px) rotate(-8deg);}
+}
+@keyframes girlFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+@keyframes mirrorSway{0%,100%{transform:rotate(0deg);}40%{transform:rotate(3deg);}70%{transform:rotate(-2deg);}}
+#makeup-girl{animation:girlFloat 5s ease-in-out infinite;}
+#lipstick{animation:lipstickMove 3s ease-in-out infinite;transform-origin:64px 190px;}
+#mirror-group{animation:mirrorSway 4s ease-in-out infinite;transform-origin:270px 240px;}
+#girl-3d{opacity:.5;}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-logo">Shivani's Parlour</div>
+  <div class="l-sub">Luxury Beauty · Ahmedabad</div>
+  <div class="l-bar"><div class="l-fill"></div></div>
+</div>
+
+<!-- PARTICLE BG CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Shivani<span>'s</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta"><span>Book Now</span></a>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <button id="close-menu">✕</button>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#booking" onclick="closeMobileMenu()">Book Appointment</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- Sparkles -->
+  <div class="sparkle" style="--dur:3s;--delay:0s;left:15%;top:20%;"></div>
+  <div class="sparkle" style="--dur:4s;--delay:.5s;left:30%;top:70%;"></div>
+  <div class="sparkle" style="--dur:3.5s;--delay:1s;left:60%;top:30%;"></div>
+  <div class="sparkle" style="--dur:5s;--delay:.3s;left:80%;top:60%;"></div>
+  <div class="sparkle" style="--dur:4.5s;--delay:1.5s;left:45%;top:15%;"></div>
+  <div class="sparkle" style="--dur:3s;--delay:2s;left:10%;top:55%;"></div>
+  <div class="sparkle" style="--dur:4s;--delay:.8s;left:70%;top:80%;"></div>
+  <div class="sparkle" style="--dur:3.5s;--delay:1.2s;left:90%;top:25%;"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="he">Luxury Beauty Experience</div>
+    <h1 class="hero-title" id="ht">
+      Enhance Your<br><em>Natural Beauty</em>
+    </h1>
+    <p class="hero-sub" id="hs">Ahmedabad's Premium Beauty &amp; Makeup Destination — where artistry meets elegance in every detail.</p>
+    <div class="hero-btns" id="hb">
+      <a href="#booking" class="btn-primary">Book Appointment</a>
+      <a href="#services" class="btn-secondary">Explore Services</a>
+    </div>
+  </div>
+
+  <!-- 3D Animated Girl Doing Makeup -->
+  <div class="float-wrap" id="girl-wrap">
+    <canvas id="girl-3d" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+    <div id="girl-svg-wrap" style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;">
+      <svg id="makeup-girl" viewBox="0 0 340 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;height:auto;filter:drop-shadow(0 0 40px rgba(232,160,168,0.3));">
+        <defs>
+          <radialGradient id="skinGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#f5c8a8"/>
+            <stop offset="100%" stop-color="#d4956a"/>
+          </radialGradient>
+          <radialGradient id="faceGlow" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffe0d0" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#d4956a" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="hairGrad" cx="50%" cy="20%" r="70%">
+            <stop offset="0%" stop-color="#3a1a0a"/>
+            <stop offset="100%" stop-color="#1a0800"/>
+          </radialGradient>
+          <radialGradient id="dressGrad" cx="50%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#e8a0a8"/>
+            <stop offset="100%" stop-color="#c96a7a"/>
+          </radialGradient>
+          <radialGradient id="mirrorGrad" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffeef0" stop-opacity="0.9"/>
+            <stop offset="60%" stop-color="#f5d5da" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#c96a7a" stop-opacity="0.3"/>
+          </radialGradient>
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="lipGlow">
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <linearGradient id="legGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#d4956a"/>
+            <stop offset="50%" stop-color="#f5c8a8"/>
+            <stop offset="100%" stop-color="#c4855a"/>
+          </linearGradient>
+          <linearGradient id="dressBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#e8a0a8"/>
+            <stop offset="100%" stop-color="#b07080"/>
+          </linearGradient>
+          <clipPath id="mirrorClip">
+            <ellipse cx="270" cy="195" rx="38" ry="48"/>
+          </clipPath>
+        </defs>
+
+        <!-- === MIRROR (left hand side) === -->
+        <g id="mirror-group">
+          <!-- Mirror handle -->
+          <rect x="263" y="238" width="8" height="55" rx="4" fill="#b07860"/>
+          <rect x="261" y="285" width="12" height="8" rx="3" fill="#d4af7a"/>
+          <!-- Mirror frame -->
+          <ellipse cx="270" cy="193" rx="44" ry="54" fill="#c96a7a" opacity="0.5"/>
+          <ellipse cx="270" cy="193" rx="40" ry="50" fill="#d4af7a"/>
+          <!-- Mirror reflection -->
+          <ellipse cx="270" cy="193" rx="36" ry="46" fill="url(#mirrorGrad)"/>
+          <!-- Face reflection in mirror -->
+          <ellipse cx="270" cy="188" rx="22" ry="26" fill="#f5c8a8" opacity="0.8"/>
+          <!-- Eyes in mirror -->
+          <ellipse cx="261" cy="183" rx="4" ry="2.5" fill="#2a1a0a" opacity="0.7"/>
+          <ellipse cx="279" cy="183" rx="4" ry="2.5" fill="#2a1a0a" opacity="0.7"/>
+          <!-- Lips in mirror -->
+          <path d="M263,198 Q270,204 277,198" stroke="#c96a7a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Shimmer on mirror -->
+          <ellipse cx="255" cy="170" rx="5" ry="8" fill="white" opacity="0.25" transform="rotate(-20,255,170)"/>
+          <circle cx="280" cy="162" r="3" fill="white" opacity="0.2"/>
+        </g>
+
+        <!-- === BODY / DRESS === -->
+        <!-- Dress skirt -->
+        <path d="M108,360 Q90,420 80,510 L260,510 Q250,420 232,360 Q200,380 170,380 Q140,380 108,360Z" fill="url(#dressBottom)"/>
+        <!-- Dress bodice -->
+        <path d="M112,280 Q90,320 100,360 Q135,380 170,382 Q205,382 240,360 Q250,320 228,280 Q210,310 170,315 Q130,310 112,280Z" fill="url(#dressGrad)"/>
+        <!-- Dress neckline -->
+        <path d="M138,265 Q160,285 170,282 Q180,285 202,265 Q190,255 170,260 Q150,255 138,265Z" fill="#e8a0a8"/>
+        <!-- Dress sparkle details -->
+        <circle cx="145" cy="330" r="2" fill="white" opacity="0.6"/>
+        <circle cx="170" cy="345" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="195" cy="325" r="2" fill="white" opacity="0.6"/>
+        <circle cx="160" cy="310" r="1" fill="white" opacity="0.4"/>
+        <circle cx="185" cy="355" r="1.5" fill="white" opacity="0.5"/>
+        <!-- Belt/waist detail -->
+        <path d="M120,320 Q170,330 220,320 Q215,335 170,338 Q125,335 120,320Z" fill="#b07080" opacity="0.6"/>
+        <!-- Glitter on dress -->
+        <circle cx="140" cy="400" r="1.5" fill="#d4af7a" opacity="0.7"/>
+        <circle cx="165" cy="430" r="1" fill="#d4af7a" opacity="0.6"/>
+        <circle cx="195" cy="410" r="1.5" fill="#d4af7a" opacity="0.7"/>
+        <circle cx="120" cy="460" r="1" fill="#d4af7a" opacity="0.5"/>
+        <circle cx="210" cy="455" r="1.5" fill="#d4af7a" opacity="0.6"/>
+        <circle cx="175" cy="480" r="1" fill="#d4af7a" opacity="0.5"/>
+        <circle cx="150" cy="470" r="2" fill="white" opacity="0.4"/>
+        <circle cx="220" cy="480" r="1" fill="white" opacity="0.3"/>
+
+        <!-- === LEFT ARM (holding mirror) === -->
+        <path d="M228,280 Q248,285 262,270 Q272,258 275,248 Q268,240 260,245 Q252,255 240,265 Q228,268 220,275Z" fill="url(#skinGrad)"/>
+        <!-- Hand holding mirror -->
+        <ellipse cx="270" cy="250" rx="13" ry="10" fill="url(#skinGrad)"/>
+        <!-- Fingers -->
+        <path d="M258,245 Q255,238 258,234" stroke="#f5c8a8" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M264,243 Q261,235 264,231" stroke="#f5c8a8" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M270,243 Q268,235 271,231" stroke="#f5c8a8" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M276,245 Q275,237 278,234" stroke="#f5c8a8" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <!-- Nail polish on fingers -->
+        <ellipse cx="258" cy="234" rx="2.5" ry="3" fill="#e8a0a8"/>
+        <ellipse cx="264" cy="231" rx="2.5" ry="3" fill="#e8a0a8"/>
+        <ellipse cx="271" cy="231" rx="2.5" ry="3" fill="#e8a0a8"/>
+        <ellipse cx="278" cy="234" rx="2.5" ry="3" fill="#e8a0a8"/>
+        <!-- Bangle on left wrist -->
+        <ellipse cx="248" cy="272" rx="12" ry="6" fill="none" stroke="#d4af7a" stroke-width="3"/>
+        <ellipse cx="248" cy="272" rx="12" ry="6" fill="none" stroke="#e8a0a8" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <!-- === RIGHT ARM (applying lipstick) === -->
+        <path d="M112,280 Q92,285 82,278 Q75,268 78,255 Q88,250 95,258 Q105,268 115,272Z" fill="url(#skinGrad)"/>
+        <!-- Right forearm -->
+        <path d="M78,255 Q72,240 68,228 Q65,218 70,212" stroke="#f5c8a8" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <!-- Right hand -->
+        <ellipse cx="71" cy="210" rx="12" ry="9" fill="url(#skinGrad)"/>
+        <!-- Fingers on right hand -->
+        <path d="M64,204 Q60,196 62,192" stroke="#f5c8a8" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M69,202 Q66,193 68,189" stroke="#f5c8a8" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M74,202 Q72,193 75,189" stroke="#f5c8a8" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <!-- Nail polish right hand -->
+        <ellipse cx="62" cy="192" rx="2" ry="2.5" fill="#e8a0a8"/>
+        <ellipse cx="68" cy="189" rx="2" ry="2.5" fill="#e8a0a8"/>
+        <ellipse cx="75" cy="189" rx="2" ry="2.5" fill="#e8a0a8"/>
+        <!-- LIPSTICK in right hand -->
+        <g id="lipstick">
+          <!-- Lipstick body -->
+          <rect x="58" y="170" width="12" height="28" rx="3" fill="#d4af7a"/>
+          <rect x="59" y="171" width="4" height="26" rx="2" fill="#e8c870" opacity="0.5"/>
+          <!-- Lipstick cap (removed) -->
+          <!-- Lipstick bullet -->
+          <rect x="59" y="155" width="10" height="16" rx="2" fill="#c96a7a"/>
+          <path d="M59,155 Q64,148 69,155" fill="#e8808a"/>
+          <!-- Lipstick tip glow -->
+          <ellipse cx="64" cy="152" rx="4" ry="3" fill="#ff9aaa" opacity="0.7" filter="url(#lipGlow)"/>
+        </g>
+        <!-- Bangle on right wrist -->
+        <ellipse cx="74" cy="220" rx="11" ry="5" fill="none" stroke="#d4af7a" stroke-width="2.5"/>
+
+        <!-- === NECK === -->
+        <path d="M152,230 Q170,238 188,230 L185,265 Q170,272 155,265Z" fill="url(#skinGrad)"/>
+        <!-- Necklace -->
+        <path d="M148,255 Q170,268 192,255" stroke="#d4af7a" stroke-width="2" fill="none"/>
+        <circle cx="158" cy="261" r="2" fill="#d4af7a"/>
+        <circle cx="170" cy="265" r="3" fill="#e8a0a8"/>
+        <circle cx="182" cy="261" r="2" fill="#d4af7a"/>
+        <circle cx="152" cy="258" r="1.5" fill="#d4af7a"/>
+        <circle cx="188" cy="258" r="1.5" fill="#d4af7a"/>
+
+        <!-- === HEAD === -->
+        <!-- Hair back -->
+        <ellipse cx="170" cy="155" rx="80" ry="90" fill="url(#hairGrad)"/>
+        <!-- Hair bun / style at back -->
+        <circle cx="230" cy="115" r="22" fill="#2a1200"/>
+        <circle cx="235" cy="118" r="8" fill="#3a1a0a"/>
+        <!-- Face -->
+        <ellipse cx="170" cy="170" rx="62" ry="72" fill="url(#skinGrad)"/>
+        <!-- Face glow highlight -->
+        <ellipse cx="155" cy="155" rx="28" ry="35" fill="url(#faceGlow)"/>
+        <!-- === MAKEUP DETAILS ON FACE === -->
+        <!-- Foundation / skin glow -->
+        <ellipse cx="148" cy="180" rx="16" ry="12" fill="#ffb8b0" opacity="0.25"/>
+        <ellipse cx="192" cy="180" rx="16" ry="12" fill="#ffb8b0" opacity="0.25"/>
+        <!-- EYEBROWS -->
+        <path d="M140,148 Q152,142 162,145" stroke="#2a1200" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M178,145 Q188,142 200,148" stroke="#2a1200" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <!-- Eye shadow -->
+        <ellipse cx="151" cy="158" rx="14" ry="8" fill="#c96a7a" opacity="0.35"/>
+        <ellipse cx="189" cy="158" rx="14" ry="8" fill="#c96a7a" opacity="0.35"/>
+        <!-- EYES -->
+        <!-- Left eye white -->
+        <ellipse cx="151" cy="161" rx="13" ry="8" fill="white"/>
+        <!-- Right eye white -->
+        <ellipse cx="189" cy="161" rx="13" ry="8" fill="white"/>
+        <!-- Left iris -->
+        <circle cx="151" cy="161" r="7" fill="#3a2010"/>
+        <!-- Right iris -->
+        <circle cx="189" cy="161" r="7" fill="#3a2010"/>
+        <!-- Left pupil -->
+        <circle cx="151" cy="161" r="4" fill="#1a0800"/>
+        <!-- Right pupil -->
+        <circle cx="189" cy="161" r="4" fill="#1a0800"/>
+        <!-- Eye shine -->
+        <circle cx="154" cy="158" r="2.5" fill="white" opacity="0.9"/>
+        <circle cx="192" cy="158" r="2.5" fill="white" opacity="0.9"/>
+        <circle cx="153" cy="162" r="1" fill="white" opacity="0.5"/>
+        <circle cx="191" cy="162" r="1" fill="white" opacity="0.5"/>
+        <!-- Eyeliner -->
+        <path d="M138,161 Q151,156 164,161 Q158,168 151,169 Q144,168 138,161Z" fill="#1a0800" opacity="0.5"/>
+        <path d="M176,161 Q189,156 202,161 Q196,168 189,169 Q182,168 176,161Z" fill="#1a0800" opacity="0.5"/>
+        <!-- Lashes top -->
+        <path d="M138,161 Q136,155 138,152" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M142,158 Q140,151 142,148" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M147,156 Q146,149 148,146" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M153,156 Q152,149 154,146" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M158,157 Q158,150 161,148" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M163,159 Q164,152 167,151" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- Right lashes -->
+        <path d="M176,161 Q174,155 176,152" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M180,158 Q178,151 180,148" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M185,156 Q184,149 186,146" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M191,156 Q190,149 192,146" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M196,157 Q196,150 199,148" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M201,159 Q202,152 205,151" stroke="#1a0800" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- NOSE -->
+        <path d="M166,175 Q162,188 165,194 Q170,197 175,194 Q178,188 174,175" stroke="#c4855a" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <ellipse cx="166" cy="194" rx="4" ry="2.5" fill="#c4855a" opacity="0.4"/>
+        <ellipse cx="174" cy="194" rx="4" ry="2.5" fill="#c4855a" opacity="0.4"/>
+        <!-- LIPS — applying lipstick look (open slightly) -->
+        <path d="M150,208 Q158,204 170,206 Q182,204 190,208 Q182,214 170,216 Q158,214 150,208Z" fill="#c96a7a"/>
+        <path d="M150,208 Q160,212 170,210 Q180,212 190,208" fill="#e8808a" opacity="0.7"/>
+        <path d="M155,208 Q163,205 170,206 Q177,205 185,208" stroke="#a05060" stroke-width="1" fill="none" opacity="0.5"/>
+        <!-- Cupid bow highlight -->
+        <path d="M160,206 Q165,203 170,205 Q175,203 180,206" fill="white" opacity="0.3"/>
+        <!-- Lip gloss shine -->
+        <ellipse cx="163" cy="210" rx="5" ry="2" fill="white" opacity="0.35" transform="rotate(-10,163,210)"/>
+        <!-- Blush / highlighter -->
+        <ellipse cx="143" cy="182" rx="20" ry="12" fill="#ffb8b0" opacity="0.22" transform="rotate(-15,143,182)"/>
+        <ellipse cx="197" cy="182" rx="20" ry="12" fill="#ffb8b0" opacity="0.22" transform="rotate(15,197,182)"/>
+        <!-- Highlight on nose bridge -->
+        <ellipse cx="170" cy="165" rx="4" ry="12" fill="white" opacity="0.12"/>
+        <!-- Earrings -->
+        <circle cx="109" cy="175" r="5" fill="#d4af7a"/>
+        <path d="M109,180 L107,195 L111,195 Z" fill="#e8a0a8"/>
+        <circle cx="109" cy="197" r="4" fill="#c96a7a"/>
+        <circle cx="231" cy="175" r="5" fill="#d4af7a"/>
+        <path d="M231,180 L229,195 L233,195 Z" fill="#e8a0a8"/>
+        <circle cx="231" cy="197" r="4" fill="#c96a7a"/>
+
+        <!-- === HAIR FRONT === -->
+        <!-- Side hair left -->
+        <path d="M110,120 Q100,150 108,200 Q115,230 120,245 Q108,220 105,185 Q98,150 108,110Z" fill="#2a1200"/>
+        <!-- Side hair right -->
+        <path d="M230,120 Q240,150 232,200 Q225,230 220,245 Q232,220 235,185 Q242,150 232,110Z" fill="#2a1200"/>
+        <!-- Top hair sweep -->
+        <path d="M120,80 Q145,65 170,68 Q195,65 220,80 Q205,72 170,74 Q135,72 120,80Z" fill="#1a0800"/>
+        <!-- Hair strand details -->
+        <path d="M118,90 Q110,130 112,175" stroke="#4a2200" stroke-width="2" fill="none" opacity="0.5"/>
+        <path d="M222,90 Q230,130 228,175" stroke="#4a2200" stroke-width="2" fill="none" opacity="0.5"/>
+        <path d="M140,72 Q135,110 130,150" stroke="#4a2200" stroke-width="1.5" fill="none" opacity="0.4"/>
+        <path d="M165,68 Q162,105 158,145" stroke="#4a2200" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+        <!-- === SPARKLE EFFECTS (animated) === -->
+        <g id="sparkles-girl">
+          <g class="girl-sparkle" style="animation:girlSpark 2s .2s ease infinite">
+            <circle cx="290" cy="155" r="3" fill="#d4af7a"/>
+            <line x1="290" y1="148" x2="290" y2="144" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="290" y1="162" x2="290" y2="166" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="283" y1="155" x2="279" y2="155" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="297" y1="155" x2="301" y2="155" stroke="#d4af7a" stroke-width="1.5"/>
+          </g>
+          <g class="girl-sparkle" style="animation:girlSpark 2.5s .7s ease infinite">
+            <circle cx="50" cy="180" r="2.5" fill="#e8a0a8"/>
+            <line x1="50" y1="174" x2="50" y2="171" stroke="#e8a0a8" stroke-width="1.2"/>
+            <line x1="50" y1="186" x2="50" y2="189" stroke="#e8a0a8" stroke-width="1.2"/>
+            <line x1="44" y1="180" x2="41" y2="180" stroke="#e8a0a8" stroke-width="1.2"/>
+            <line x1="56" y1="180" x2="59" y2="180" stroke="#e8a0a8" stroke-width="1.2"/>
+          </g>
+          <g class="girl-sparkle" style="animation:girlSpark 3s 1.2s ease infinite">
+            <circle cx="310" cy="250" r="2" fill="#e8a0a8"/>
+            <line x1="310" y1="245" x2="310" y2="243" stroke="#e8a0a8" stroke-width="1"/>
+            <line x1="310" y1="255" x2="310" y2="257" stroke="#e8a0a8" stroke-width="1"/>
+            <line x1="305" y1="250" x2="303" y2="250" stroke="#e8a0a8" stroke-width="1"/>
+            <line x1="315" y1="250" x2="317" y2="250" stroke="#e8a0a8" stroke-width="1"/>
+          </g>
+          <g class="girl-sparkle" style="animation:girlSpark 2.2s .4s ease infinite">
+            <circle cx="32" cy="135" r="3.5" fill="#d4af7a"/>
+            <line x1="32" y1="127" x2="32" y2="123" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="32" y1="143" x2="32" y2="147" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="24" y1="135" x2="20" y2="135" stroke="#d4af7a" stroke-width="1.5"/>
+            <line x1="40" y1="135" x2="44" y2="135" stroke="#d4af7a" stroke-width="1.5"/>
+          </g>
+        </g>
+
+        <!-- Lipstick sparkle near mouth -->
+        <g style="animation:girlSpark 1.8s .3s ease infinite">
+          <circle cx="95" cy="205" r="2" fill="#e8808a"/>
+          <line x1="95" y1="200" x2="95" y2="197" stroke="#e8808a" stroke-width="1.2"/>
+          <line x1="95" y1="210" x2="95" y2="213" stroke="#e8808a" stroke-width="1.2"/>
+          <line x1="90" y1="205" x2="87" y2="205" stroke="#e8808a" stroke-width="1.2"/>
+          <line x1="100" y1="205" x2="103" y2="205" stroke="#e8808a" stroke-width="1.2"/>
+        </g>
+
+        <!-- Floating makeup items around her -->
+        <!-- Small heart -->
+        <g style="animation:floatHeart 3s ease-in-out infinite">
+          <path d="M295,90 Q295,83 302,83 Q309,83 309,90 Q309,97 295,104 Q281,97 281,90 Q281,83 288,83 Q295,83 295,90Z" fill="#e8a0a8" opacity="0.7"/>
+        </g>
+        <!-- Small star -->
+        <g style="animation:floatHeart 3.5s .8s ease-in-out infinite">
+          <polygon points="35,70 38,63 41,70 48,70 43,75 45,82 38,78 31,82 33,75 28,70" fill="#d4af7a" opacity="0.6"/>
+        </g>
+        <!-- Floating dots -->
+        <circle cx="305" cy="320" r="4" fill="#e8a0a8" opacity="0.5" style="animation:floatHeart 4s 1s ease-in-out infinite"/>
+        <circle cx="38" cy="300" r="3" fill="#d4af7a" opacity="0.5" style="animation:floatHeart 3.2s .5s ease-in-out infinite"/>
+        <circle cx="320" cy="180" r="2.5" fill="#e8808a" opacity="0.6" style="animation:floatHeart 2.8s 1.4s ease-in-out infinite"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-img-wrap reveal-left">
+    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="Shivani's Parlour Ahmedabad luxury salon interior">
+    <div class="about-badge"><strong>10+</strong>Years of<br>Excellence</div>
+  </div>
+  <div class="about-text reveal-right">
+    <div class="section-eyebrow">Our Story</div>
+    <h2 class="section-title">Where Beauty<br>Meets <em>Artistry</em></h2>
+    <p>Nestled in the heart of Ahmedabad, Shivani's Parlour has been the city's most sought-after luxury beauty destination for over a decade. We believe every woman deserves to feel extraordinary — not just on special occasions, but every single day.</p>
+    <p>Our team of internationally trained beauty experts brings precision, passion, and premium products to every service. From transformative bridal makeovers to rejuvenating skin treatments, we craft experiences tailored to you.</p>
+    <div class="counters">
+      <div class="counter-item">
+        <div class="counter-num" data-target="2500">0</div>
+        <div class="counter-label">Happy Clients</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num" data-target="10">0</div>
+        <div class="counter-label">Years Experience</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num" data-target="850">0</div>
+        <div class="counter-label">Bridal Makeovers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">What We Offer</div>
+    <h2 class="section-title">Premium <em>Services</em></h2>
+    <div class="luxury-divider"><span>✦</span></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal" style="transition-delay:.0s">
+      <div class="service-icon">💍</div>
+      <div class="service-name">Bridal Makeup</div>
+      <div class="service-desc">Cinematic HD bridal looks crafted with airbrush techniques and premium cosmetics for your most memorable day.</div>
+      <div class="service-price">Starting ₹8,000</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.05s">
+      <div class="service-icon">✂️</div>
+      <div class="service-name">Hair Styling</div>
+      <div class="service-desc">From sleek blowouts to intricate bridal updos — our stylists sculpt hair into works of art.</div>
+      <div class="service-price">Starting ₹800</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.1s">
+      <div class="service-icon">🌸</div>
+      <div class="service-name">Facial Treatment</div>
+      <div class="service-desc">Advanced skincare rituals using luxury European formulas for radiant, glowing skin.</div>
+      <div class="service-price">Starting ₹1,200</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.15s">
+      <div class="service-icon">💅</div>
+      <div class="service-name">Nail Art</div>
+      <div class="service-desc">Bespoke nail designs — gel extensions, chrome finishes, intricate art, and luxury manicures.</div>
+      <div class="service-price">Starting ₹600</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.2s">
+      <div class="service-icon">🛁</div>
+      <div class="service-name">Hair Spa</div>
+      <div class="service-desc">Deep nourishing treatments that restore vitality, shine, and strength to your hair.</div>
+      <div class="service-price">Starting ₹1,500</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.25s">
+      <div class="service-icon">✨</div>
+      <div class="service-name">Skin Care</div>
+      <div class="service-desc">Personalized skincare regimens including HydraFacials, peels, and anti-aging treatments.</div>
+      <div class="service-price">Starting ₹1,800</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.3s">
+      <div class="service-icon">🎉</div>
+      <div class="service-name">Party Makeup</div>
+      <div class="service-desc">Glamorous, long-lasting makeup looks for every occasion — festive, cocktail, or event ready.</div>
+      <div class="service-price">Starting ₹2,500</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.35s">
+      <div class="service-icon">🌿</div>
+      <div class="service-name">Keratin Treatment</div>
+      <div class="service-desc">Brazilian keratin smoothing for silky, frizz-free, manageable hair lasting up to 6 months.</div>
+      <div class="service-price">Starting ₹4,500</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">Portfolio</div>
+    <h2 class="section-title">Our <em>Gallery</em></h2>
+    <div class="luxury-divider"><span>✦</span></div>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Bridal makeup transformation Ahmedabad" loading="lazy">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80" alt="Luxury hair styling" loading="lazy">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=400&q=80" alt="Nail art luxury" loading="lazy">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1597655601841-214a4cfe8b2c?w=400&q=80" alt="Skin care facial" loading="lazy">
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=400&q=80" alt="Party makeup glam" loading="lazy">
+    </div>
+  </div>
+  <div class="gallery-cta reveal">
+    <a href="https://instagram.com" target="_blank" class="btn-secondary">View on Instagram →</a>
+  </div>
+</section>
+
+<!-- BANNER STRIP -->
+<div style="
+  position:relative;z-index:1;
+  height:300px;overflow:hidden;
+  background-image:url('https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=1920&q=85');
+  background-size:cover;background-position:center 30%;background-attachment:fixed;
+  display:flex;align-items:center;justify-content:center;
+">
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,10,11,0.75),rgba(201,106,122,0.25),rgba(13,10,11,0.75));"></div>
+  <div style="position:relative;z-index:1;text-align:center;">
+    <div style="font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,5vw,3.5rem);color:var(--white);text-shadow:0 2px 20px rgba(0,0,0,0.5);">"Every woman deserves to feel like a queen"</div>
+    <div style="font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-top:.8rem;">— Shivani's Parlour, Ahmedabad</div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">Client Love</div>
+    <h2 class="section-title">What They <em>Say</em></h2>
+    <div class="luxury-divider"><span>✦</span></div>
+  </div>
+  <div class="testimonials-track">
+    <div class="testimonial-card reveal" style="transition-delay:.0s">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="t-text">Shivani's Parlour transformed me on my wedding day. The bridal makeup was flawless — I felt like royalty. Every guest complimented me. Best decision I made!</p>
+      <div class="t-author"><div class="t-avatar">P</div><div><div class="t-name">Priya Sharma</div><div class="t-loc">Bride · Navrangpura, Ahmedabad</div></div></div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:.1s">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="t-text">I've been coming here for over 3 years for my regular facials and hair care. The quality is consistently exceptional — truly Ahmedabad's finest beauty salon.</p>
+      <div class="t-author"><div class="t-avatar">R</div><div><div class="t-name">Riya Patel</div><div class="t-loc">Regular Client · Satellite, Ahmedabad</div></div></div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:.2s">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="t-text">The keratin treatment was life-changing. My hair has never looked this healthy and shiny. The staff is professional, warm, and incredibly skilled. Highly recommend!</p>
+      <div class="t-author"><div class="t-avatar">D</div><div><div class="t-name">Deepa Mehta</div><div class="t-loc">Client · Bopal, Ahmedabad</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">Investment</div>
+    <h2 class="section-title">Beauty <em>Packages</em></h2>
+    <div class="luxury-divider"><span>✦</span></div>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card reveal" style="transition-delay:.0s">
+      <div class="pricing-name">Glow Essentials</div>
+      <div class="pricing-price"><sup>₹</sup>3,999<span class="pricing-period">/ session</span></div>
+      <div class="pricing-desc">Perfect for everyday radiance & self-care</div>
+      <ul class="pricing-features">
+        <li>Classic Facial</li>
+        <li>Eyebrow Shaping</li>
+        <li>Basic Nail Care</li>
+        <li>Blowout & Styling</li>
+        <li>Threading & Waxing</li>
+      </ul>
+      <a href="#booking" class="pricing-btn">Book Now</a>
+    </div>
+    <div class="pricing-card featured reveal" style="transition-delay:.1s">
+      <div class="pricing-badge">Most Popular</div>
+      <div class="pricing-name">Bridal Royale</div>
+      <div class="pricing-price"><sup>₹</sup>24,999<span class="pricing-period">/ package</span></div>
+      <div class="pricing-desc">Complete bridal experience for your big day</div>
+      <ul class="pricing-features">
+        <li>HD Bridal Makeup</li>
+        <li>Bridal Hair Styling</li>
+        <li>Pre-Bridal Facial (3 sessions)</li>
+        <li>Full Body Wax & Polish</li>
+        <li>Nail Art & Extensions</li>
+        <li>Mehndi Consultation</li>
+        <li>Trial Makeup Session</li>
+      </ul>
+      <a href="#booking" class="pricing-btn">Book Bridal Package</a>
+    </div>
+    <div class="pricing-card reveal" style="transition-delay:.2s">
+      <div class="pricing-name">Luxury Refresh</div>
+      <div class="pricing-price"><sup>₹</sup>8,999<span class="pricing-period">/ session</span></div>
+      <div class="pricing-desc">Premium head-to-toe rejuvenation</div>
+      <ul class="pricing-features">
+        <li>HydraFacial Treatment</li>
+        <li>Keratin Hair Mask</li>
+        <li>Gel Nail Extensions</li>
+        <li>Hair Spa Treatment</li>
+        <li>Full Body Wax</li>
+        <li>Party Makeup</li>
+      </ul>
+      <a href="#booking" class="pricing-btn">Book Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-inner reveal">
+    <div class="booking-header">
+      <div class="section-eyebrow" style="justify-content:center;">Reserve Your Experience</div>
+      <h2 class="section-title">Book an <em>Appointment</em></h2>
+      <p style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:-.5rem;">We'll confirm your appointment within 24 hours</p>
+    </div>
+    <div class="form-grid" id="booking-form">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" placeholder="Your beautiful name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-input" placeholder="+91 98765 43210">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Select Service</label>
+        <select class="form-input">
+          <option value="">Choose a Service</option>
+          <option>Bridal Makeup</option>
+          <option>Hair Styling</option>
+          <option>Facial Treatment</option>
+          <option>Nail Art</option>
+          <option>Hair Spa</option>
+          <option>Skin Care</option>
+          <option>Party Makeup</option>
+          <option>Keratin Treatment</option>
+          <option>Bridal Royale Package</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Preferred Date</label>
+        <input type="date" class="form-input">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Message (Optional)</label>
+        <textarea class="form-input" placeholder="Any special requests or notes for us..."></textarea>
+      </div>
+      <div class="form-group full">
+        <button class="form-submit" onclick="submitForm(this)">Confirm Appointment ✦</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info reveal-left">
+      <div class="section-eyebrow">Find Us</div>
+      <h2 class="section-title">Visit <em>Us</em></h2>
+      <p>We are conveniently located in Ahmedabad, Gujarat. Walk in or book an appointment to experience the finest beauty services in the city.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <div class="label">Address</div>
+            <div class="value">Near Vastrapur Lake, Vastrapur,<br>Ahmedabad, Gujarat 380015</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📞</div>
+          <div class="contact-item-text">
+            <div class="label">Phone</div>
+            <a href="tel:+919876543210" class="value">+91 98765 43210</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🕐</div>
+          <div class="contact-item-text">
+            <div class="label">Hours</div>
+            <div class="value">Mon – Sat: 9:30 AM – 8:00 PM<br>Sunday: 10:00 AM – 6:00 PM</div>
+          </div>
+        </div>
+      </div>
+      <div class="social-row">
+        <a href="https://wa.me/919876543210" target="_blank" class="social-btn">💬 WhatsApp</a>
+        <a href="https://instagram.com" target="_blank" class="social-btn">📸 Instagram</a>
+        <a href="tel:+919876543210" class="social-btn">📞 Call Us</a>
+      </div>
+    </div>
+    <div class="map-wrap reveal-right">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.1!2d72.5299!3d23.0395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f1d7c8b7e5%3A0x1!2sVastrapur%2C+Ahmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Shivani's Parlour Location - Ahmedabad">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Shivani<span>'s</span> Parlour</div>
+      <div class="footer-tagline">Beauty is the purest expression of self</div>
+    </div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <a href="#about" style="font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.35);text-decoration:none;">About</a>
+      <a href="#services" style="font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.35);text-decoration:none;">Services</a>
+      <a href="#pricing" style="font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.35);text-decoration:none;">Pricing</a>
+      <a href="#booking" style="font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.35);text-decoration:none;">Book Now</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Shivani's Parlour · Ahmedabad, Gujarat, India · Crafted with ♥ for Beauty</div>
+</footer>
+
+<script>
+// ====== CURSOR ======
+const cursor = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animTrail(){
+  tx+=(mx-tx)*.15;ty+=(my-ty)*.15;
+  trail.style.left=tx+'px';trail.style.top=ty+'px';
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+document.querySelectorAll('a,button,.service-card,.gallery-item,.pricing-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';});
+});
+
+// ====== LOADER ======
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const loader = document.getElementById('loader');
+    loader.style.opacity='0';
+    setTimeout(()=>{loader.style.display='none';initAnimations();},800);
+  },2400);
+});
+
+// ====== NAV ======
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('mobile-menu').classList.add('open');});
+document.getElementById('close-menu').addEventListener('click',()=>{document.getElementById('mobile-menu').classList.remove('open');});
+function closeMobileMenu(){document.getElementById('mobile-menu').classList.remove('open');}
+
+// ====== PARTICLE BG (Three.js) ======
+(function initParticles(){
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,.1,1000);
+  camera.position.z = 5;
+
+  // Particles
+  const count = 800;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count*3);
+  const col = new Float32Array(count*3);
+  const roseColors = [[0.91,0.627,0.659],[0.788,0.471,0.486],[0.69,0.471,0.376],[0.831,0.686,0.478]];
+  for(let i=0;i<count;i++){
+    pos[i*3]=(Math.random()-0.5)*20;
+    pos[i*3+1]=(Math.random()-0.5)*20;
+    pos[i*3+2]=(Math.random()-0.5)*10;
+    const c = roseColors[Math.floor(Math.random()*roseColors.length)];
+    col[i*3]=c[0];col[i*3+1]=c[1];col[i*3+2]=c[2];
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  const mat = new THREE.PointsMaterial({size:.06,vertexColors:true,transparent:true,opacity:.6,blending:THREE.AdditiveBlending});
+  const pts = new THREE.Points(geo,mat);
+  scene.add(pts);
+
+  let mx2=0,my2=0;
+  document.addEventListener('mousemove',e=>{mx2=(e.clientX/window.innerWidth-.5)*2;my2=-(e.clientY/window.innerHeight-.5)*2;});
+  window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+  
+  function animate(){
+    requestAnimationFrame(animate);
+    pts.rotation.y += 0.0008;
+    pts.rotation.x += 0.0003;
+    pts.rotation.y += mx2*0.0005;
+    pts.rotation.x += my2*0.0003;
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+// ====== GIRL BG GLOW ORBS (Three.js behind SVG girl) ======
+(function initGirlBg(){
+  const canvas = document.getElementById('girl-3d');
+  if(!canvas) return;
+  const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  const w=canvas.parentElement.clientWidth||460,h=canvas.parentElement.clientHeight||600;
+  renderer.setSize(w,h);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55,w/h,0.1,100);
+  camera.position.z=5;
+
+  // Soft glow lighting
+  scene.add(new THREE.AmbientLight(0xffeef0,1));
+  const pl1=new THREE.PointLight(0xe8a0a8,3,8);pl1.position.set(0,0,2);scene.add(pl1);
+  const pl2=new THREE.PointLight(0xd4af7a,2,8);pl2.position.set(2,-1,1);scene.add(pl2);
+
+  // Glowing ring halos around girl
+  const ringMat=new THREE.MeshBasicMaterial({color:0xe8a0a8,transparent:true,opacity:.18,wireframe:false});
+  const ringMat2=new THREE.MeshBasicMaterial({color:0xd4af7a,transparent:true,opacity:.12,wireframe:false});
+  const rings=[];
+  [[2.5,.05,16,80,ringMat,0,0,-.5],[2.0,.04,12,60,ringMat2,.3,.2,-.8],[1.6,.03,10,60,ringMat,-.2,-.1,-1]].forEach(([R,t,s,seg,m,x,y,z])=>{
+    const mesh=new THREE.Mesh(new THREE.TorusGeometry(R,t,s,seg),m);
+    mesh.position.set(x,y,z);mesh.rotation.x=Math.PI/6;
+    scene.add(mesh);rings.push(mesh);
+  });
+
+  // Floating jewel particles
+  const gems=[];
+  const gemColors=[0xe8a0a8,0xd4af7a,0xc96a7a,0xf0e8e0];
+  for(let i=0;i<18;i++){
+    const geo = i%3===0 ? new THREE.OctahedronGeometry(.06+Math.random()*.08,0) : new THREE.IcosahedronGeometry(.04+Math.random()*.06,0);
+    const mat=new THREE.MeshPhongMaterial({color:gemColors[i%4],shininess:200,transparent:true,opacity:.55+Math.random()*.3});
+    const m=new THREE.Mesh(geo,mat);
+    const angle=Math.random()*Math.PI*2;
+    const r=1.5+Math.random()*1.8;
+    m.position.set(Math.cos(angle)*r,(Math.random()-.5)*3.5,Math.sin(angle)*r-.5);
+    m.userData={ox:Math.random()*2,oy:Math.random()*3,speed:.4+Math.random()*.5,baseY:m.position.y};
+    scene.add(m);gems.push(m);
+  }
+
+  const clock=new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t=clock.getElapsedTime();
+    rings.forEach((r,i)=>{r.rotation.z=t*(i%2===0?.15:.12);r.rotation.y=t*.08;});
+    gems.forEach(g=>{
+      g.rotation.x+=.012;g.rotation.y+=.018;
+      g.position.y=g.userData.baseY+Math.sin(t*g.userData.speed+g.userData.oy)*.4;
+      g.position.x=g.position.x+Math.cos(t*g.userData.speed*.5+g.userData.ox)*.003;
+    });
+    pl1.intensity=2.5+Math.sin(t*.8)*.8;
+    renderer.render(scene,camera);
+  }
+  animate();
+  window.addEventListener('resize',()=>{
+    const w2=canvas.parentElement.clientWidth||460,h2=canvas.parentElement.clientHeight||600;
+    camera.aspect=w2/h2;camera.updateProjectionMatrix();renderer.setSize(w2,h2);
+  });
+})();
+
+// ====== SCROLL ANIMATIONS ======
+function initAnimations(){
+  // Hero entrance
+  setTimeout(()=>{
+    [['#he',0],['#ht',100],['#hs',200],['#hb',300]].forEach(([sel,delay])=>{
+      setTimeout(()=>{
+        const el=document.querySelector(sel);
+        if(el){el.style.opacity='1';el.style.transform='translateY(0)';el.style.transition='opacity .8s ease,transform .8s ease';}
+      },delay);
+    });
+  },100);
+
+  // Intersection observer for reveals
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        // counter animation
+        e.target.querySelectorAll('.counter-num[data-target]').forEach(animCounter);
+      }
+    });
+  },{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+  // Also observe counter parent
+  const counterObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.counter-num[data-target]').forEach(animCounter);
+        counterObs.unobserve(e.target);
+      }
+    });
+  },{threshold:.3});
+  document.querySelectorAll('.counters').forEach(el=>counterObs.observe(el));
+}
+
+function animCounter(el){
+  if(el.dataset.animated) return;
+  el.dataset.animated='1';
+  const target = parseInt(el.dataset.target);
+  const suffix = target >= 1000 ? '+' : '+';
+  let current = 0;
+  const duration = 2000;
+  const step = target / (duration/16);
+  const timer = setInterval(()=>{
+    current = Math.min(current+step, target);
+    el.textContent = Math.floor(current) + suffix;
+    if(current >= target) clearInterval(timer);
+  },16);
+}
+
+// ====== SERVICE CARD 3D TILT ======
+document.querySelectorAll('.service-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width-.5;
+    const y = (e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-6px) perspective(800px) rotateX(${-y*8}deg) rotateY(${x*8}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+// ====== FORM SUBMIT ======
+function submitForm(btn){
+  btn.textContent='Sending...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='✓ Appointment Confirmed!';
+    btn.style.background='linear-gradient(135deg,#4caf50,#388e3c)';
+    setTimeout(()=>{
+      btn.textContent='Confirm Appointment ✦';
+      btn.style.background='';
+      btn.disabled=false;
+    },3000);
+  },1500);
+}
+
+// ====== SMOOTH SCROLL ======
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
